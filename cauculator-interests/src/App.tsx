@@ -2,7 +2,6 @@
 import './App.css';
 import HeaderCalc from './components/HeaderCalc';
 import FormCalc from './components/FormCalc';
-import Received from './components/Received';
 
 function App() {
   return (
@@ -10,8 +9,7 @@ function App() {
         
             <HeaderCalc />
             <FormCalc />
-            {/* <Received /> */}
-       
+    
     </div>
   );
 }

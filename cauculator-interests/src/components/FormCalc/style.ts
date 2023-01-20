@@ -14,7 +14,8 @@ input{
     width: 251px;
     height: 35px;
     border-radius: 4px;
-    margin: 0px 10px 20px;
+    margin: 0px 10px 0px;
+    padding: 3px;
     border: 1px solid #DDE6E9;
 }
 label{
@@ -23,19 +24,26 @@ label{
     color: #656565;
     text-align: left;
     margin-left: 10px;
-    margin-bottom: 1px;
+    margin-top: 16px;
 }
     
-.send{
-        width: 50%;
-        height: 2rem;
-        justify-content: center;
-        display: flex;
-        flex-wrap: wrap;
-        align-content: center;
-        margin: 0 auto;
-        border-radius: 9px;
-    }
+span{
+    font-size: 9px;
+    margin-left: 10px;
+    text-align: start;
+    color: #CECECE;
+}
+
+select{
+    color: #000000;
+    background-color: #FFFFFF;
+    width: 251px;
+    height: 35px;
+    border-radius: 4px;
+    margin: 0px 10px 0px;
+    padding: 3px;
+    border: 1px solid #DDE6E9;
+}
     
     
 `
@@ -64,5 +72,9 @@ export const ReceivedValues = styled.ul`
         color:#5D9CEC;
         list-style: none;
     }
+    .days{
+        display: none;
+    }
+    
 
 `

@@ -2,25 +2,26 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Iform } from "../../Interfaces";
 import { apiAxios } from "../../services";
-import { Container,Form, ReceivedValues } from "./style";
+import Received from "../Received";
+import { Container,Form} from "./style";
 
 const FormCalc = () =>{
     const {register, handleSubmit} = useForm<Iform>()
     const [data, setData] = useState(0)
+    const [newValue, setNewValue] = useState(0)
     
 
-
-
-        const getValuesApi = async({amount, installments, mdr}:Iform )=>{
+    
+        const getValuesApi = async({amount, installments, mdr, days}:Iform )=>{
             let values = {
                 amount: amount,
                 installments: installments,
-                mdr: mdr
-            }
-            if(values.amount >= 1000 && values.installments > 0 && values.installments < 13  && values.mdr > 0 ){
+                mdr: mdr,
+            }            
+            
+            if(values.amount >= 1000  && values.mdr > 0 ){
                 try{
                     await apiAxios.post("", values).then((response)=>{
-                        console.log(response);
                         setData(response.data);
     
                     })}catch(err){
@@ -28,14 +29,39 @@ const FormCalc = () =>{
                     }
             }
             
+            let newDays = {
+                amount: amount,
+                installments: installments,
+                mdr: mdr,
+                days: [days]
+            }
+
+            let dayStr = newDays.days.join()
+            
+            
+            if(newDays.amount >= 1000 && newDays.mdr > 0 && Number(dayStr) !== 1 && Number(dayStr) > 0){
+
+                dayStr.split("")
+                try {
+
+                    await apiAxios.post("", newDays).then((response) => {
+                        setNewValue(response.data);
+                        
+                    });
+                    
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+            
+            
 
         }
-        // useEffect(()=>{
-        //     getValuesApi(data)
 
-        // },[data])
 
-        let finalValue = Object.values(data!)
+        let finalValue = Object.values(data)
+        let newDay = Object.values(newValue)
+        let key = Object.keys(newValue)
 
         
 
@@ -44,27 +70,34 @@ const FormCalc = () =>{
         <Container >
         <Form onChange={handleSubmit(getValuesApi)} >
         <label htmlFor="amount">Informe o valor da venda * </label>
-            <input type="number" placeholder="ex. R$ 1000,00" id="amount" {...register("amount")}/>
+            <input type="number" placeholder="ex. R$ 1000,00" id="amount" min={1000} {...register("amount")}/>
         <label htmlFor="installments">Em quantas parcelas * </label>
-            <input type="" placeholder="ex. 5" id="installments" {...register("installments")} />
+            
+            <select id="installments" {...register("installments")}>
+                <option value="">parcelas</option>
+                <option value="1" >1x</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+                <option value="4">4x</option>
+                <option value="5">5x</option>
+                <option value="6">6x</option>
+                <option value="7">7x</option>
+                <option value="8">8x</option>
+                <option value="9">9x</option>
+                <option value="10">10x</option>
+                <option value="11">11x</option>
+                <option value="12">12x</option>
+            </select>
             <span>Máximo de 12 parcelas</span>
+
         <label htmlFor="received">Informe o percentual de MDR * </label>
-            <input type="number" placeholder="ex. 4" id="mdr" {...register("mdr")}  />
+            <input type="number" placeholder="ex. 4" id="mdr" min={1} max={100}{...register("mdr")}  />
         <label htmlFor="Idays">Datas personalizadas </label>
-        <select name="Cdays" id="Idays">
-            <option value="30">30</option>
-            <option value="30">30</option>
-            <option value="30">30</option>
-        </select>
+        <input type="number" placeholder="digite número de dias" id="days" {...register("days")}/>
         </Form>
         
-        <ReceivedValues>
-        <h3>VOCÊ RECEBERÁ :</h3>
-        <li>Amanhã: R${finalValue[0]},00 </li>
-        <li>Em 15 dias: R${finalValue[1]},00</li>
-        <li>Em 30 dias: R${finalValue[2]},00</li>
-        <li>Em 90 dias: R${finalValue[3]},00</li>
-        </ReceivedValues>
+        <Received newKey={key} finalValue={finalValue} newDay={newDay}  />
+        
         </Container>
     )
 }
