@@ -4,9 +4,11 @@ import { Iform } from "../../Interfaces";
 import { apiAxios } from "../../services";
 import Received from "../Received";
 import { Container,Form} from "./style";
+import {yupResolver} from "@hookform/resolvers/yup"
+import { formSchema } from "../../validators";
 
 const FormCalc = () =>{
-    const {register, handleSubmit} = useForm<Iform>()
+    const {register, handleSubmit, formState:{errors},} = useForm<Iform>({resolver: yupResolver(formSchema)})
     const [data, setData] = useState(0)
     const [newValue, setNewValue] = useState(0)
     
@@ -71,9 +73,11 @@ const FormCalc = () =>{
         <Form onChange={handleSubmit(getValuesApi)} >
         <label htmlFor="amount">Informe o valor da venda * </label>
             <input type="number" placeholder="ex. R$ 1000,00" id="amount" min={1000} {...register("amount")}/>
+            <p>{errors?.amount?.message}</p>
         <label htmlFor="installments">Em quantas parcelas * </label>
             
             <select id="installments" {...register("installments")}>
+
                 <option value="">parcelas</option>
                 <option value="1" >1x</option>
                 <option value="2">2x</option>
@@ -89,11 +93,16 @@ const FormCalc = () =>{
                 <option value="12">12x</option>
             </select>
             <span>Máximo de 12 parcelas</span>
+            <p>{errors?.installments?.message}</p>
 
         <label htmlFor="received">Informe o percentual de MDR * </label>
             <input type="number" placeholder="ex. 4" id="mdr" min={1} max={100}{...register("mdr")}  />
+            <p>{errors?.mdr?.message}</p>
+
         <label htmlFor="Idays">Datas personalizadas </label>
-        <input type="number" placeholder="digite número de dias" id="days" {...register("days")}/>
+            <input type="number" placeholder="digite número de dias" id="days" {...register("days")}/>
+            <p>{errors?.days?.message}</p>
+
         </Form>
         
         <Received newKey={key} finalValue={finalValue} newDay={newDay}  />
