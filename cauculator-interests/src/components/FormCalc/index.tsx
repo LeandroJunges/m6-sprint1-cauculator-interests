@@ -73,7 +73,6 @@ const FormCalc = () =>{
         <Form onChange={handleSubmit(getValuesApi)} >
         <label htmlFor="amount">Informe o valor da venda * </label>
             <input type="number" placeholder="ex. R$ 1000,00" id="amount" min={1000} {...register("amount")}/>
-            <p>{errors?.amount?.message}</p>
         <label htmlFor="installments">Em quantas parcelas * </label>
             
             <select id="installments" {...register("installments")}>
@@ -93,15 +92,15 @@ const FormCalc = () =>{
                 <option value="12">12x</option>
             </select>
             <span>Máximo de 12 parcelas</span>
-            <p>{errors?.installments?.message}</p>
+            <span>{errors?.installments?.message}</span>
 
         <label htmlFor="received">Informe o percentual de MDR * </label>
             <input type="number" placeholder="ex. 4" id="mdr" min={1} max={100}{...register("mdr")}  />
-            <p>{errors?.mdr?.message}</p>
+            <span>{errors?.mdr?.message}</span>
 
         <label htmlFor="Idays">Datas personalizadas </label>
             <input type="number" placeholder="digite número de dias" id="days" {...register("days")}/>
-            <p>{errors?.days?.message}</p>
+            <span>{errors?.days?.message}</span>
 
         </Form>
         
